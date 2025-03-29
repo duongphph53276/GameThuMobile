@@ -1,5 +1,5 @@
-import { UserModel } from "../model/user.ts";
-    import bcrypt from 'bcryptjs'
+import { UserModel } from "../models/user.js";
+import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 export const Register = async (req, res) => {
     try {
@@ -28,7 +28,7 @@ export const Login = async(req,res) => {
         //email đã tồn tại
         const compare = await bcrypt.compare(password,user.password)
         if (!compare) throw { mes : "sai mật khẩu"}
-        const token = jwt.sign({email:user.email,id:user._id,name:user.name},"123456",{expiresIn:"5s"})
+        const token = jwt.sign({email:user.email,id:user._id,name:user.name},process.env.JWT_SECRET,{expiresIn:"1h"})
         user.password = undefined
         res.status(200).send({message:'Đăng nhập thành công',user:user,token:token,status:true})
     } catch (error) {

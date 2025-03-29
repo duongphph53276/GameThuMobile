@@ -1,24 +1,26 @@
 {
-    "compilerOptions": {
-      "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-      "target": "ES2022",
-      "lib": ["ES2023"],
-      "module": "ESNext",
-      "skipLibCheck": true,
-  
-      /* Bundler mode */
-      "moduleResolution": "bundler",
-      "allowImportingTsExtensions": true,
-      "isolatedModules": true,
-      "moduleDetection": "force",
-      "noEmit": true,
-  
-      /* Linting */
-      "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noFallthroughCasesInSwitch": true,
-      "noUncheckedSideEffectImports": true
-    },
-    "include": ["vite.config.ts"]
-  }
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023", "ESNext"], // Thêm "ESNext" để hỗ trợ các tính năng mới của JavaScript
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "allowJs": true, // Cho phép TypeScript kiểm tra kiểu cho file JavaScript
+
+    /* Bundler mode */
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["server/src/**/*.js", "server/**/*.js"],
+  "exclude": ["node_modules"]
+}

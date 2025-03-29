@@ -32,7 +32,7 @@ const productSchema = new Schema(
             default: null
         },
         images: {
-            type: [String],  // Mảng chứa đường dẫn hình ảnh
+            type: [String],
             default: []
         },
         createdAt: {
@@ -58,7 +58,7 @@ const productSchema = new Schema(
         }
     },
     {
-        timestamps: true // Tự động tạo `createdAt` và `updatedAt`
+        timestamps: true
     }
 );
 
