@@ -8,7 +8,7 @@ import Dashboard from "./components/admin/Dashboard";
 function App() {
   const routes = useRoutes([
         { path: '/', element: <Welcome /> },
-        {path: '/dashboard', element: <AdminLayout />, children:[
+        {path: '/admin', element: <AdminLayout />, children:[
           {path:'', element:<Dashboard/>},
         ] },
 
