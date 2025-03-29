@@ -1,10 +1,16 @@
+import "./app.css";
 import { useRoutes, useParams } from "react-router-dom";
 import "./index.css"
 import Welcome from "./components/Welcome";
+import AdminLayout from "./layout/AdminLayout";
+import Dashboard from "./components/admin/Dashboard";
 
 function App() {
   const routes = useRoutes([
         { path: '/', element: <Welcome /> },
+        {path: '/dashboard', element: <AdminLayout />, children:[
+          {path:'', element:<Dashboard/>},
+        ] },
 
     // { path: '/register', element: <Register /> },
     // { path: '/login', element: <Login /> },
