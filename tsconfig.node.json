@@ -21,6 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["server/src/**/*.js", "server/**/*.js"],
+  "include": ["server/src/**/*.js", "server/**/*.js", "src/**/*.css"],
   "exclude": ["node_modules"]
 }
