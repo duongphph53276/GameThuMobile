@@ -5,6 +5,7 @@ import cors from 'cors';
 import { AddProduct, ListProduct, EditProduct, DeleteProduct, GetProductById } from './src/controllers/products.js';
 import { Register, Login } from './src/controllers/auth.js';
 import { AddGameName, DeleteGameName, EditGameName, GetGameNameById, ListGameNames } from './src/controllers/gamename.js';
+import { authMiddleware, restrictTo } from './src/middleware/auth.js';
 
 // Load biến môi trường từ .env
 dotenv.config();
@@ -27,21 +28,29 @@ const connectDB = async () => {
     }
 };
 
-// Routes cho sản phẩm
-app.post('/products/add', AddProduct);
-app.get('/products', ListProduct);
-app.put('/products/edit/:id', EditProduct);
-app.delete('/products/:id', DeleteProduct);
-app.get('/products/:id', GetProductById);
-// Routes cho GameName
-app.post('/gamenames/add', AddGameName);
-app.get('/gamenames', ListGameNames);
-app.put('/gamenames/edit/:id', EditGameName);
-app.delete('/gamenames/:id', DeleteGameName);
-app.get('/gamenames/:id', GetGameNameById);
-//routes login
+// Public routes
 app.post('/register', Register);
 app.post('/login', Login);
+
+// Protected routes cho client (đã đăng nhập) // Client có thể xem danh sách sản phẩm
+// app.get('/gamenames', authMiddleware, ListGameNames);
+// app.get('/gamenames/:id', authMiddleware, GetGameNameById);
+
+// Admin routes (chỉ admin truy cập được)
+const adminRouter = express.Router();
+adminRouter.use(authMiddleware, restrictTo('admin')); // Chỉ cho phép admin truy cập
+adminRouter.get('/products', authMiddleware, ListProduct); 
+adminRouter.get('/products/:id', authMiddleware, GetProductById);
+adminRouter.post('/products/add', AddProduct);
+adminRouter.put('/products/edit/:id', EditProduct);
+adminRouter.delete('/products/:id', DeleteProduct);
+adminRouter.get('/gamenames', authMiddleware, ListGameNames);
+adminRouter.get('/gamenames/:id', authMiddleware, GetGameNameById);
+adminRouter.post('/gamenames/add', AddGameName);
+adminRouter.put('/gamenames/edit/:id', EditGameName);
+adminRouter.delete('/gamenames/:id', DeleteGameName);
+
+app.use('/admin', adminRouter); // Tất cả route /admin/* chỉ admin truy cập được
 
 // Khởi động server
 app.listen(PORT, async () => {

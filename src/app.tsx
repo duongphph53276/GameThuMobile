@@ -13,9 +13,13 @@ import ProductDetail from "./components/admin/ProductDetail";
 import GameNameList from "./components/admin/GameName";
 import GameNameAdd from "./components/admin/GameNameAdd";
 import GameNameEdit from "./components/admin/GameNameEdit";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 function App() {
   const routes = useRoutes([
+    { path: '/login', element: <Login /> },
+    { path: '/register', element: <Register /> },
     { path: '/welcome', element: <Welcome /> },
     { path: '/admin', element: <AdminLayout />, children:[
       { path:'', element:<Dashboard/>},
