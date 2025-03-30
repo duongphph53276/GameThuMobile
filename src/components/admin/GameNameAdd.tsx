@@ -11,7 +11,7 @@ const GameNameAdd: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/gamenames/add', { name });
+      const response = await axios.post('http://localhost:5000/admin/gamenames/add', { name });
       if (response.data.status) {
         alert('Thêm game thành công');
         setName(''); // Reset input sau khi thêm thành công

@@ -14,7 +14,7 @@ const GameNameEdit: React.FC = () => {
   useEffect(() => {
     const fetchGameName = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/gamenames/${id}`);
+        const response = await axios.get(`http://localhost:5000/admin/gamenames/${id}`);
         if (response.data.status) {
           setGameName(response.data.data);
         } else {
@@ -34,7 +34,7 @@ const GameNameEdit: React.FC = () => {
     if (!gameName) return;
 
     try {
-      const response = await axios.put(`http://localhost:5000/gamenames/edit/${id}`, {
+      const response = await axios.put(`http://localhost:5000/admin/gamenames/edit/${id}`, {
         name: gameName.name,
       });
       if (response.data.status) {

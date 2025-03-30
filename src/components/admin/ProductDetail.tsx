@@ -12,7 +12,7 @@ const ProductDetail: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/products/${id}`);
+        const response = await axios.get(`http://localhost:5000/admin/products/${id}`);
         if (response.data.status) {
           setProduct(response.data.data);
         } else {

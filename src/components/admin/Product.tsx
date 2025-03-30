@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../auth/axiosConfig';
 import { Product } from '../../interfaces/product';
 import { Link } from 'react-router-dom';
+
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -11,7 +12,7 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/products');
+        const response = await axios.get('http://localhost:5000/admin/products');
         if (response.data.status) {
           setProducts(response.data.data);
         } else {
@@ -32,7 +33,7 @@ const ProductList: React.FC = () => {
     if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
 
     try {
-      const response = await axios.delete(`http://localhost:5000/products/${id}`);
+      const response = await axios.delete(`http://localhost:5000/admin/products/${id}`);
       if (response.data.status) {
         setProducts(products.filter((product) => product._id !== id));
         alert('Xóa sản phẩm thành công');

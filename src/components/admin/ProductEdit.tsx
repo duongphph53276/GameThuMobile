@@ -16,8 +16,8 @@ const ProductEdit: React.FC = () => {
     const fetchData = async () => {
       try {
         const [productResponse, gameNamesResponse] = await Promise.all([
-          axios.get(`http://localhost:5000/products/${id}`),
-          axios.get('http://localhost:5000/gamenames'),
+          axios.get(`http://localhost:5000/admin/products/${id}`),
+          axios.get('http://localhost:5000/admin/gamenames'),
         ]);
 
         if (productResponse.data.status) {
@@ -55,7 +55,7 @@ const ProductEdit: React.FC = () => {
         accountEmail: formData.accountType === 'email' ? formData.accountEmail : null,
         accountFacebookId: formData.accountType === 'facebook' ? formData.accountFacebookId : null,
       };
-      const response = await axios.put(`http://localhost:5000/products/edit/${id}`, payload);
+      const response = await axios.put(`http://localhost:5000/admin/products/edit/${id}`, payload);
       if (response.data.status) {
         alert('Cập nhật sản phẩm thành công');
         navigate('/admin/products');

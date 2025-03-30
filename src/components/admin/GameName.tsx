@@ -11,7 +11,7 @@ const GameNameList: React.FC = () => {
   useEffect(() => {
     const fetchGameNames = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/gamenames');
+        const response = await axios.get('http://localhost:5000/admin/gamenames');
         if (response.data.status) {
           setGameNames(response.data.data);
         } else {
@@ -29,7 +29,7 @@ const GameNameList: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc muốn xóa game này?')) return;
     try {
-      const response = await axios.delete(`http://localhost:5000/gamenames/${id}`);
+      const response = await axios.delete(`http://localhost:5000/admin/gamenames/${id}`);
       if (response.data.status) {
         setGameNames(gameNames.filter((game) => game._id !== id));
         alert('Xóa thành công');

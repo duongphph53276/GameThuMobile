@@ -21,7 +21,7 @@ const ProductAdd: React.FC = () => {
 
   useEffect(() => {
     const fetchGameNames = async () => {
-      const response = await axios.get('http://localhost:5000/gamenames');
+      const response = await axios.get('http://localhost:5000/admin/gamenames');
       if (response.data.status) setGameNames(response.data.data);
     };
     fetchGameNames();
@@ -40,7 +40,7 @@ const ProductAdd: React.FC = () => {
         accountEmail: formData.accountType === 'email' ? formData.accountEmail : null,
         accountFacebookId: formData.accountType === 'facebook' ? formData.accountFacebookId : null,
       };
-      const response = await axios.post('http://localhost:5000/products/add', payload);
+      const response = await axios.post('http://localhost:5000/admin/products/add', payload);
       if (response.data.status) {
         alert('Thêm sản phẩm thành công');
         setFormData({
