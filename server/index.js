@@ -28,6 +28,8 @@ const connectDB = async () => {
     }
 };
 
+
+
 // Public routes
 app.post('/register', Register);
 app.post('/login', Login);
@@ -49,6 +51,17 @@ adminRouter.get('/gamenames/:id', authMiddleware, GetGameNameById);
 adminRouter.post('/gamenames/add', AddGameName);
 adminRouter.put('/gamenames/edit/:id', EditGameName);
 adminRouter.delete('/gamenames/:id', DeleteGameName);
+app.get('/me', authMiddleware, async (req, res) => {
+    try {
+      const user = await UserModel.findById(req.user.id).select('name email role'); // Lấy từ DB
+      if (!user) {
+        return res.status(404).send({ message: "Không tìm thấy người dùng", status: false });
+      }
+      res.send({ status: true, user });
+    } catch (error) {
+      res.status(500).send({ message: "Lỗi server", status: false });
+    }
+  });
 
 app.use('/admin', adminRouter); // Tất cả route /admin/* chỉ admin truy cập được
 

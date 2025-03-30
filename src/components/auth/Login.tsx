@@ -13,6 +13,7 @@ const Login: React.FC = () => {
       const response = await axios.post('http://localhost:5000/login', { email, password });
       if (response.data.status) {
         localStorage.setItem('token', response.data.token); // Lưu token
+        localStorage.setItem('role', response.data.user.role); // Lưu role
         const role = response.data.user.role;
         if (role === 'admin') {
           navigate('/admin');
