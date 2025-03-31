@@ -25,8 +25,8 @@ const UserSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["active", "banned"],
-      default: "active",
+      enum: ["Hoạt động", "Cấm"],
+      default: "Hoạt động",
     },
     bannedUntil: {
       type: Date,

@@ -5,16 +5,19 @@ interface HeaderAdminProps {
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
   onLogout: () => void;
+  user: any; // Thông tin user từ backend
 }
 
-const HeaderAdmin: React.FC<HeaderAdminProps> = ({ darkMode, setDarkMode, onLogout }) => {
+const HeaderAdmin: React.FC<HeaderAdminProps> = ({ darkMode, setDarkMode, onLogout, user }) => {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
       <h1 className="text-xl font-semibold text-gray-800 dark:text-white">Quản trị hệ thống</h1>
       <div className="flex items-center space-x-4">
-        <span className="text-gray-600 dark:text-gray-300">Xin chào, Admin</span>
+        <span className="text-gray-600 dark:text-gray-300">
+          Xin chào, {user?.name || "Admin"}
+        </span>
         <button
           onClick={toggleDarkMode}
           className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"

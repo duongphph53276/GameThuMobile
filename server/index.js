@@ -3,70 +3,61 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { AddProduct, ListProduct, EditProduct, DeleteProduct, GetProductById } from './src/controllers/products.js';
-import { Register, Login } from './src/controllers/auth.js';
+import { Register, Login, VerifyToken, Profile, UpdateProfile } from './src/controllers/auth.js';
 import { AddGameName, DeleteGameName, EditGameName, GetGameNameById, ListGameNames } from './src/controllers/gamename.js';
 import { authMiddleware, restrictTo } from './src/middleware/auth.js';
 
-// Load biến môi trường từ .env
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000; // Sử dụng biến môi trường PORT nếu có
+const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(express.json());
-app.use(cors()); // Cho phép frontend gọi API
+app.use(cors());
 
 // Kết nối MongoDB
 const connectDB = async () => {
-    try {
-        await mongoose.connect('mongodb://localhost:27017/gamethumobile');
-        console.log('Kết nối DB thành công');
-    } catch (error) {
-        console.error('Kết nối DB thất bại:', error);
-        process.exit(1); // Thoát nếu kết nối DB thất bại
-    }
+  try {
+    await mongoose.connect('mongodb://localhost:27017/gamethumobile');
+    console.log('Kết nối DB thành công');
+  } catch (error) {
+    console.error('Kết nối DB thất bại:', error);
+    process.exit(1);
+  }
 };
-
-
 
 // Public routes
 app.post('/register', Register);
 app.post('/login', Login);
+app.get('/verify-token', VerifyToken);
+app.get('/products', ListProduct);
+app.get('/products/:id', GetProductById);
+app.get('/gamenames', ListGameNames); // Route public
+app.get('/gamenames/:id', GetGameNameById);
 
-// Protected routes cho client (đã đăng nhập) // Client có thể xem danh sách sản phẩm
-// app.get('/gamenames', authMiddleware, ListGameNames);
-// app.get('/gamenames/:id', authMiddleware, GetGameNameById);
+// Protected routes cho client (đã đăng nhập)
+app.get('/profile', authMiddleware, Profile);
+app.put('/profile', authMiddleware, UpdateProfile);
 
-// Admin routes (chỉ admin truy cập được)
+// Admin routes (chỉ admin)
 const adminRouter = express.Router();
-adminRouter.use(authMiddleware, restrictTo('admin')); // Chỉ cho phép admin truy cập
-adminRouter.get('/products', authMiddleware, ListProduct); 
-adminRouter.get('/products/:id', authMiddleware, GetProductById);
+adminRouter.use(authMiddleware, restrictTo('admin'));
+
 adminRouter.post('/products/add', AddProduct);
 adminRouter.put('/products/edit/:id', EditProduct);
 adminRouter.delete('/products/:id', DeleteProduct);
-adminRouter.get('/gamenames', authMiddleware, ListGameNames);
-adminRouter.get('/gamenames/:id', authMiddleware, GetGameNameById);
 adminRouter.post('/gamenames/add', AddGameName);
 adminRouter.put('/gamenames/edit/:id', EditGameName);
 adminRouter.delete('/gamenames/:id', DeleteGameName);
-app.get('/me', authMiddleware, async (req, res) => {
-    try {
-      const user = await UserModel.findById(req.user.id).select('name email role'); // Lấy từ DB
-      if (!user) {
-        return res.status(404).send({ message: "Không tìm thấy người dùng", status: false });
-      }
-      res.send({ status: true, user });
-    } catch (error) {
-      res.status(500).send({ message: "Lỗi server", status: false });
-    }
-  });
 
-app.use('/admin', adminRouter); // Tất cả route /admin/* chỉ admin truy cập được
+app.use('/admin', adminRouter);
 
 // Khởi động server
-app.listen(PORT, async () => {
-    await connectDB();
+const startServer = async () => {
+  await connectDB(); // Đợi kết nối DB trước khi chạy server
+  app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
-});
+  });
+};
+
+startServer();

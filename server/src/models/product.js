@@ -46,7 +46,7 @@ const productSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Còn hàng", "Hết hàng"],
+      enum: ["Còn hàng", "Đã bán"],
       required: true,
     },
     price: {

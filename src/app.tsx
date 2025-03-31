@@ -15,6 +15,9 @@ import GameNameAdd from "./components/admin/GameNameAdd";
 import GameNameEdit from "./components/admin/GameNameEdit";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import Profile from "./components/client/Profile";
+import ProfileEdit from "./components/client/ProfileEdit";
+import NotFound from "./components/404/NotFound";
 
 // ProtectedRoute dùng role từ localStorage
 const ProtectedRoute = ({ children, requiresAdmin = false }: { children: JSX.Element; requiresAdmin?: boolean }) => {
@@ -53,12 +56,15 @@ function App() {
     },
     {
       path: "/",
-      element: <ProtectedRoute><ClientLayout /></ProtectedRoute>,
+      element:<ClientLayout />,
       children: [
         { path: "", element: <Home /> },
+        { path: "profile", element: <ProtectedRoute><Profile /></ProtectedRoute> },
+        { path: "client/edit", element: <ProtectedRoute><ProfileEdit /></ProtectedRoute> },
       ],
     },
-  ]);
+    { path: "*", element: <NotFound /> }, // Chuyển hướng mọi URL không khớp đến NotFound 
+    ]);
   return routes;
 }
 
