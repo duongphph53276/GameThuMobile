@@ -1,12 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../../components/auth/axiosConfig';
 
 const NavClient: React.FC = () => {
+  const [isGameDropdownOpen, setIsGameDropdownOpen] = useState(false);
   const [gameNames, setGameNames] = useState<{ name: string; slug: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isGameDropdownOpen, setIsGameDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Mở dropdown khi hover
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsGameDropdownOpen(true);
+  };
+
+  // Đóng dropdown khi rời chuột, với độ trễ
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      if (dropdownRef.current && !dropdownRef.current.matches(':hover')) {
+        setIsGameDropdownOpen(false);
+      }
+    }, 200);
+  };
 
   // Lấy danh sách GameName từ API
   useEffect(() => {
@@ -15,9 +32,9 @@ const NavClient: React.FC = () => {
       setError(null);
       try {
         const response = await axios.get('http://localhost:5000/gamenames');
-        console.log('Response từ /gamenames:', response.data); // Debug response
+        console.log('Response từ /gamenames:', response.data);
         if (response.data.status) {
-          setGameNames(response.data.data); // Lấy từ data
+          setGameNames(response.data.data);
         } else {
           setError('Không tải được danh sách game');
         }
@@ -46,35 +63,54 @@ const NavClient: React.FC = () => {
         </li>
 
         {/* 2. Các loại game (Dropdown) */}
-        <li className="relative"
-            onMouseEnter={() => setIsGameDropdownOpen(true)} // Mở dropdown khi di chuột vào
-            onMouseLeave={() => setIsGameDropdownOpen(false)} // Đóng dropdown khi di chuột ra
-        >
-          <button
-            className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center"
+        <li className="relative">
+          <div
+            ref={dropdownRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="inline-block"
           >
-            Các loại game
-            <span className="ml-1">▼</span>
-          </button>
-          {isGameDropdownOpen && (
-            <div className="absolute z-10 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg w-64">
-              <ul className="text-gray-700 dark:text-gray-200">
-                {isLoading ? (
-                  <li className="p-2 text-center">Đang tải...</li>
-                ) : error ? (
-                  <li className="p-2 text-center text-red-500">{error}</li>
-                ) : gameNames.length > 0 ? (
-                  gameNames.map((game, index) => (
-                    <li key={index} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600">
-                      <Link to={`/games/${game.slug}`}>{game.name}</Link> {/* Chỉ hiển thị tên game */}
-                    </li>
-                  ))
-                ) : (
-                  <li className="p-2 text-center">Không có game nào</li>
-                )}
-              </ul>
-            </div>
-          )}
+            <button
+              className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center"
+            >
+              Các loại game
+              <span className="ml-1">{isGameDropdownOpen ? '▲' : '▼'}</span>
+            </button>
+            {isGameDropdownOpen && (
+              <div className="absolute z-10 mt-0 bg-white dark:bg-gray-800 shadow-lg rounded-lg w-64 top-full">
+                <table className="w-full text-left text-gray-700 dark:text-gray-200">
+                  <tbody>
+                    {isLoading ? (
+                      <tr>
+                        <td className="p-2 text-center">Đang tải...</td>
+                      </tr>
+                    ) : error ? (
+                      <tr>
+                        <td className="p-2 text-center text-red-500">{error}</td>
+                      </tr>
+                    ) : gameNames.length > 0 ? (
+                      gameNames.map((game, index) => (
+                        <tr key={index} className="border-t dark:border-gray-600">
+                          <td className="p-2">
+                            <a
+                              href={`/game/${game.slug}`}
+                              className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 transition-colors block"
+                            >
+                              {game.name}
+                            </a>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td className="p-2 text-center">Không có game nào</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </li>
 
         {/* 3. Góp ý & hỗ trợ */}
