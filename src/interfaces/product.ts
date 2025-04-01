@@ -11,7 +11,7 @@ export interface Product {
   recoveryEmail?: string | null;
   images: string[];
   createdAt: string;
-  status: 'Còn Hàng' | 'Hết Hàng';
+  status: 'Còn Hàng' | 'Đã Bán';
   price: number;
   description: string;
 }

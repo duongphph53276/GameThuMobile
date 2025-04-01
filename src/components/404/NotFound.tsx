@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.css'; // Import CSS gốc
+import { Helmet } from 'react-helmet-async';
 
 const NotFound: React.FC = () => {
   const [isVietnamese, setIsVietnamese] = useState(false);
@@ -36,6 +37,10 @@ const NotFound: React.FC = () => {
   }, []); // Chỉ chạy một lần khi mount
 
   return (
+    <>
+    <Helmet>
+      <title>404 Not Found</title>
+    </Helmet>
     <section className="page_404" dangerouslySetInnerHTML={{
       __html: `
         <div class="container">
@@ -56,6 +61,7 @@ const NotFound: React.FC = () => {
         </div>
       `
     }} />
+    </>
   );
 };
 

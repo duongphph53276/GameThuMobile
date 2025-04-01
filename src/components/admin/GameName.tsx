@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { GameName } from '../../interfaces/gamename';
+import { Helmet } from 'react-helmet-async';
 
 const GameNameList: React.FC = () => {
   const [gameNames, setGameNames] = useState<GameName[]>([]);
@@ -45,6 +46,10 @@ const GameNameList: React.FC = () => {
   if (error) return <div className="text-center text-red-500">Lỗi: {error}</div>;
 
   return (
+        <>
+        <Helmet>
+          <title>ADMIN</title>
+        </Helmet>
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Danh sách Game</h2>
@@ -93,6 +98,7 @@ const GameNameList: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

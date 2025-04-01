@@ -35,10 +35,15 @@ const ProtectedRoute = ({ children, requiresAdmin = false }: { children: JSX.Ele
   return children;
 };
 
+const AuthGuard = ({ children }: { children: JSX.Element }) => {
+  const token = localStorage.getItem("token");
+  return token ? <Navigate to="/" replace /> : children;
+};
+
 function App() {
   const routes = useRoutes([
-    { path: "/login", element: <Login /> },
-    { path: "/register", element: <Register /> },
+    { path: "/login", element: <AuthGuard><Login/></AuthGuard> },
+    { path: "/register", element: <AuthGuard><Register/></AuthGuard> },
     { path: "/welcome", element: <Welcome /> },
     {
       path: "/admin",
@@ -63,7 +68,7 @@ function App() {
         { path: "client/edit", element: <ProtectedRoute><ProfileEdit /></ProtectedRoute> },
       ],
     },
-    { path: "*", element: <NotFound /> }, // Chuyển hướng mọi URL không khớp đến NotFound 
+    { path: "*", element: <NotFound /> },
     ]);
   return routes;
 }

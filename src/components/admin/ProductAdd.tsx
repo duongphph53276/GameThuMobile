@@ -12,7 +12,7 @@ const ProductAdd: React.FC = () => {
     password: '',
     twoFactorCode: '',
     recoveryEmail: '',
-    status: 'Còn hàng' as 'Còn hàng' | 'Hết hàng',
+    status: 'Còn hàng' as 'Còn hàng' | 'Đã Bán',
     price: 0,
     description: '',
   });
@@ -164,7 +164,7 @@ const ProductAdd: React.FC = () => {
             className="w-full border p-2 rounded"
           >
             <option value="Còn hàng">Còn hàng</option>
-            <option value="Hết hàng">Hết hàng</option>
+            <option value="Đã Bán">Đã Bán</option>
           </select>
         </div>
         <div>

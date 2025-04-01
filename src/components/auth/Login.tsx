@@ -1,7 +1,7 @@
-// components/auth/Login.tsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -13,8 +13,8 @@ const Login: React.FC = () => {
     try {
       const response = await axios.post('http://localhost:5000/login', { email, password });
       if (response.data.status) {
-        localStorage.setItem('token', response.data.token); // Lưu token
-        localStorage.setItem('role', response.data.user.role); // Lưu role
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('role', response.data.user.role); 
         const role = response.data.user.role;
         if (role === 'admin') {
           navigate('/admin');
@@ -28,6 +28,12 @@ const Login: React.FC = () => {
   };
 
   return (
+    <>
+    <Helmet>
+        <title>Đăng nhập</title>
+        <meta name="description" content="Đăng nhập login" />
+        <link rel="icon" href="/favicon.ico" />
+    </Helmet>
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Đăng Nhập</h2>
       <form onSubmit={handleSubmit}>
@@ -56,6 +62,8 @@ const Login: React.FC = () => {
         </button>
       </form>
     </div>
+    </>
+
   );
 };
 

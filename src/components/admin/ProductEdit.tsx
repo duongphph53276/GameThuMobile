@@ -170,7 +170,7 @@ const ProductEdit: React.FC = () => {
             className="w-full border p-2 rounded"
           >
             <option value="Còn hàng">Còn hàng</option>
-            <option value="Hết hàng">Hết hàng</option>
+            <option value="Đã Bán">Đã Bán</option>
           </select>
         </div>
         <div>

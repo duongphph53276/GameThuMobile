@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../auth/axiosConfig';
 import { Product } from '../../interfaces/product';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 
 const ProductList: React.FC = () => {
@@ -50,6 +51,10 @@ const ProductList: React.FC = () => {
   if (error) return <div className="text-center text-red-500 font-semibold">Lỗi: {error}</div>;
 
   return (
+        <>
+        <Helmet>
+          <title>ADMIN</title>
+        </Helmet>
     <div className="container mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 dark:text-white">Danh sách sản phẩm</h2>
       <Link to="/admin/products/add" className="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block hover:bg-blue-600">
@@ -109,6 +114,7 @@ const ProductList: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
