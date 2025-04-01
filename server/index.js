@@ -42,7 +42,10 @@ app.put('/profile', authMiddleware, UpdateProfile);
 // Admin routes (chỉ admin)
 const adminRouter = express.Router();
 adminRouter.use(authMiddleware, restrictTo('admin'));
-
+adminRouter.get('/products', ListProduct);
+adminRouter.get('/products/:id', GetProductById);
+adminRouter.get('/gamenames', ListGameNames);
+adminRouter.get('/gamenames/:id', GetGameNameById);
 adminRouter.post('/products/add', AddProduct);
 adminRouter.put('/products/edit/:id', EditProduct);
 adminRouter.delete('/products/:id', DeleteProduct);
