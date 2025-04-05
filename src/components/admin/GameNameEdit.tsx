@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../auth/axiosConfig';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GameName } from '../../interfaces/gamename';
 
 const GameNameEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [gameName, setGameName] = useState<GameName | null>(null);
+  const [gameName, setGameName] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +13,7 @@ const GameNameEdit: React.FC = () => {
   useEffect(() => {
     const fetchGameName = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/admin/gamenames/${id}`);
+        const response = await axios.get(`/admin/gamenames/${id}`);
         if (response.data.status) {
           setGameName(response.data.data);
         } else {

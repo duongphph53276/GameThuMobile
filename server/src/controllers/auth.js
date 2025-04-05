@@ -28,20 +28,62 @@ export const Login = async (req, res) => {
     const user = await UserModel.findOne({ email });
     if (!user) throw { mes: "Tài khoản không tồn tại" };
 
+    // Kiểm tra trạng thái tài khoản
+    if (user.status === "Cấm") {
+      const currentDate = new Date();
+      if (user.bannedUntil && user.bannedUntil > currentDate) {
+        return res.status(403).send({
+          message: "Tài khoản của bạn đã bị cấm",
+          banReason: user.banReason || "Không có lý do cụ thể",
+          bannedUntil: user.bannedUntil,
+          status: false
+        });
+      } else if (!user.bannedUntil || user.bannedUntil <= currentDate) {
+        // Nếu thời gian cấm đã hết, tự động mở khóa
+        user.status = "Hoạt động";
+        user.bannedUntil = null;
+        user.banReason = "";
+        await user.save();
+      }
+    }
+
     const compare = await bcrypt.compare(password, user.password);
     if (!compare) throw { mes: "Sai mật khẩu" };
 
     const token = jwt.sign(
-      { email: user.email, id: user._id, name: user.name, role: user.role }, // Thêm role vào token
+      { 
+        email: user.email, 
+        id: user._id, 
+        name: user.name, 
+        role: user.role 
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
     user.password = undefined;
 
-    res.status(200).send({ message: 'Đăng nhập thành công', user, token, status: true });
+    res.status(200).send({ 
+      message: 'Đăng nhập thành công', 
+      user, 
+      token, 
+      status: true 
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: error.mes ?? 'Đăng nhập thất bại', status: false });
+    if (error.status === 403) {
+      // Trường hợp tài khoản bị cấm
+      res.status(403).send({
+        message: error.message,
+        banReason: error.banReason,
+        bannedUntil: error.bannedUntil,
+        status: false
+      });
+    } else {
+      res.status(500).send({ 
+        message: error.mes ?? 'Đăng nhập thất bại', 
+        status: false 
+      });
+    }
   }
 };
 export const VerifyToken = async (req, res) => {

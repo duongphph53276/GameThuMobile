@@ -20,14 +20,6 @@ const NotFound: React.FC = () => {
     document.head.appendChild(bootstrapLink);
     document.head.appendChild(arvoLink);
 
-    // Kiểm tra địa chỉ IP
-    fetch('https://ipapi.co/json/')
-      .then(response => response.json())
-      .then(data => {
-        if (data.country === 'VN') {
-          setIsVietnamese(true);
-        }
-      });
 
     // Cleanup: Gỡ bỏ khi component unmount
     return () => {

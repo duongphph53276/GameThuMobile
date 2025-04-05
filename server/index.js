@@ -6,6 +6,7 @@ import { AddProduct, ListProduct, EditProduct, DeleteProduct, GetProductById } f
 import { Register, Login, VerifyToken, Profile, UpdateProfile } from './src/controllers/auth.js';
 import { AddGameName, DeleteGameName, EditGameName, GetGameNameById, ListGameNames } from './src/controllers/gamename.js';
 import { authMiddleware, restrictTo } from './src/middleware/auth.js';
+import { GetUserById, UserEdit, UserList } from './src/controllers/user.js';
 
 dotenv.config();
 
@@ -52,6 +53,10 @@ adminRouter.delete('/products/:id', DeleteProduct);
 adminRouter.post('/gamenames/add', AddGameName);
 adminRouter.put('/gamenames/edit/:id', EditGameName);
 adminRouter.delete('/gamenames/:id', DeleteGameName);
+adminRouter.get('/users', UserList);
+adminRouter.get('/users/:id', GetUserById);
+adminRouter.put('/users/edit/:id', UserEdit);
+
 
 app.use('/admin', adminRouter);
 

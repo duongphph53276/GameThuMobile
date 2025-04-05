@@ -1,7 +1,14 @@
 import axios from 'axios';
 
-// Cấu hình interceptor để gửi token
-axios.interceptors.request.use(
+const instance = axios.create({
+  baseURL: 'http://localhost:5000', // Đảm bảo baseURL trỏ tới server backend
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor để thêm token vào header
+instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -12,4 +19,4 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export default axios;
+export default instance;

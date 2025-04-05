@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../auth/axiosConfig';
 import { Link } from 'react-router-dom';
-import { GameName } from '../../interfaces/gamename';
 import { Helmet } from 'react-helmet-async';
 
+
 const GameNameList: React.FC = () => {
-  const [gameNames, setGameNames] = useState<GameName[]>([]);
+  const [gameNames, setGameNames] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchGameNames = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/admin/gamenames');
+        const response = await axios.get('/admin/gamenames');
         if (response.data.status) {
           setGameNames(response.data.data);
         } else {
@@ -30,7 +30,7 @@ const GameNameList: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc muốn xóa game này?')) return;
     try {
-      const response = await axios.delete(`http://localhost:5000/admin/gamenames/${id}`);
+      const response = await axios.delete(`/admin/gamenames/${id}`);
       if (response.data.status) {
         setGameNames(gameNames.filter((game) => game._id !== id));
         alert('Xóa thành công');

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../auth/axiosConfig';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Product } from '../../interfaces/product';
-import { GameName } from '../../interfaces/gamename';
+
 
 const ProductEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [formData, setFormData] = useState<Product | null>(null);
-  const [gameNames, setGameNames] = useState<GameName[]>([]);
+  const [formData, setFormData] = useState<any | null>(null);
+  const [gameNames, setGameNames] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -42,7 +41,7 @@ const ProductEdit: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => (prev ? { ...prev, [name]: value } : null));
+    setFormData((prev : any) => (prev ? { ...prev, [name]: value } : null));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

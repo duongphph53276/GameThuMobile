@@ -18,6 +18,8 @@ import Register from "./components/auth/Register";
 import Profile from "./components/client/Profile";
 import ProfileEdit from "./components/client/ProfileEdit";
 import NotFound from "./components/404/NotFound";
+import UserList from "./components/admin/User";
+import UserEdit from "./components/admin/UserEdit";
 
 // ProtectedRoute dùng role từ localStorage
 const ProtectedRoute = ({ children, requiresAdmin = false }: { children: JSX.Element; requiresAdmin?: boolean }) => {
@@ -57,6 +59,8 @@ function App() {
         { path: "gamenames", element: <GameNameList /> },
         { path: "gamenames/add", element: <GameNameAdd /> },
         { path: "gamenames/edit/:id", element: <GameNameEdit /> },
+        { path: "users", element: <UserList /> },
+        { path: "users/edit/:id", element:<UserEdit/>},
       ],
     },
     {

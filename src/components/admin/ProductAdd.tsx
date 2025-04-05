@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { GameName } from '../../interfaces/gamename';
+import axios from '../auth/axiosConfig';
 
 const ProductAdd: React.FC = () => {
-  const [formData, setFormData] = useState({
-    gameName: '',
-    accountType: 'email' as 'email' | 'facebook',
-    accountEmail: '',
-    accountFacebookId: '',
-    password: '',
-    twoFactorCode: '',
-    recoveryEmail: '',
-    status: 'Còn hàng' as 'Còn hàng' | 'Đã Bán',
-    price: 0,
-    description: '',
-  });
-  const [gameNames, setGameNames] = useState<GameName[]>([]); // Danh sách GameName
+  const [formData, setFormData] = useState<any>({});
+  const [gameNames, setGameNames] = useState<any[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,36 +17,15 @@ const ProductAdd: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = {
-        ...formData,
-        accountEmail: formData.accountType === 'email' ? formData.accountEmail : null,
-        accountFacebookId: formData.accountType === 'facebook' ? formData.accountFacebookId : null,
-      };
-      const response = await axios.post('http://localhost:5000/admin/products/add', payload);
-      if (response.data.status) {
-        alert('Thêm sản phẩm thành công');
-        setFormData({
-          gameName: '',
-          accountType: 'email',
-          accountEmail: '',
-          accountFacebookId: '',
-          password: '',
-          twoFactorCode: '',
-          recoveryEmail: '',
-          status: 'Còn hàng',
-          price: 0,
-          description: '',
-        });
-        navigate('/admin/products');
-      } else {
-        alert(response.data.message);
-      }
+      const response = await axios.post('http://localhost:5000/admin/products/add', formData);
+      navigate('/admin/products');
+      alert(response.data.message);
     } catch (err) {
       alert('Không thể thêm sản phẩm');
       console.error(err);
@@ -73,7 +40,7 @@ const ProductAdd: React.FC = () => {
           <label className="block">Tên game</label>
           <select
             name="gameName"
-            value={formData.gameName}
+            value={formData?.gameName || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
             required
@@ -90,7 +57,7 @@ const ProductAdd: React.FC = () => {
           <label className="block">Loại tài khoản</label>
           <select
             name="accountType"
-            value={formData.accountType}
+            value={formData?.accountType || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
           >
@@ -98,26 +65,26 @@ const ProductAdd: React.FC = () => {
             <option value="facebook">Facebook</option>
           </select>
         </div>
-        {formData.accountType === 'email' && (
+        {formData?.accountType === 'email' && (
           <div>
             <label className="block">Email tài khoản</label>
             <input
               type="email"
               name="accountEmail"
-              value={formData.accountEmail}
+              value={formData?.accountEmail || ''}
               onChange={handleChange}
               className="w-full border p-2 rounded"
               required
             />
           </div>
         )}
-        {formData.accountType === 'facebook' && (
+        {formData?.accountType === 'facebook' && (
           <div>
             <label className="block">Facebook ID</label>
             <input
               type="text"
               name="accountFacebookId"
-              value={formData.accountFacebookId}
+              value={formData?.accountFacebookId || ''}
               onChange={handleChange}
               className="w-full border p-2 rounded"
               required
@@ -129,7 +96,7 @@ const ProductAdd: React.FC = () => {
           <input
             type="text"
             name="password"
-            value={formData.password}
+            value={formData?.password || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
             required
@@ -140,7 +107,7 @@ const ProductAdd: React.FC = () => {
           <input
             type="text"
             name="twoFactorCode"
-            value={formData.twoFactorCode}
+            value={formData?.twoFactorCode || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
           />
@@ -150,7 +117,7 @@ const ProductAdd: React.FC = () => {
           <input
             type="email"
             name="recoveryEmail"
-            value={formData.recoveryEmail}
+            value={formData?.recoveryEmail || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
           />
@@ -159,7 +126,7 @@ const ProductAdd: React.FC = () => {
           <label className="block">Trạng thái</label>
           <select
             name="status"
-            value={formData.status}
+            value={formData?.status || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
           >
@@ -172,7 +139,7 @@ const ProductAdd: React.FC = () => {
           <input
             type="number"
             name="price"
-            value={formData.price}
+            value={formData?.price || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
             required
@@ -182,7 +149,7 @@ const ProductAdd: React.FC = () => {
           <label className="block">Mô tả</label>
           <textarea
             name="description"
-            value={formData.description}
+            value={formData?.description || ''}
             onChange={handleChange}
             className="w-full border p-2 rounded"
           />

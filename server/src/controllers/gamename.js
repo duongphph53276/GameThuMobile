@@ -6,7 +6,7 @@ import slugify from 'slugify';
 export const AddGameName = async (req, res) => {
   try {
     const { name } = req.body;
-    const slug = slugify(name, { lower: true, strict: true }); // Tự sinh slug từ name
+    const slug = slugify(name, { lower: true, strict: true });
     const gameName = await new GameNameModel({ name, slug }).save();
     res.status(201).send({ message: 'Thêm game thành công', status: true, data: gameName });
   } catch (error) {

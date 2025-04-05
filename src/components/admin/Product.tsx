@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../auth/axiosConfig';
-import { Product } from '../../interfaces/product';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/admin/products');
+        const response = await axios.get('/admin/products');
         if (response.data.status) {
           setProducts(response.data.data);
         } else {

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Product } from '../../interfaces/product';
+import axios from '../auth/axiosConfig';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/admin/products/${id}`);
+        const response = await axios.get(`/admin/products/${id}`);
         if (response.data.status) {
           setProduct(response.data.data);
         } else {
@@ -86,7 +85,7 @@ const ProductDetail: React.FC = () => {
             <div className="mt-1">
               {product.images.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
-                  {product.images.map((image, index) => (
+                  {product.images.map((image:any, index:any) => (
                     <img
                       key={index}
                       src={image}
