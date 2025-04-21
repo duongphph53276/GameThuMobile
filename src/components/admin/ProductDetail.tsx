@@ -62,10 +62,12 @@ const ProductDetail: React.FC = () => {
               {product.accountFacebookId || '(dữ liệu ở đây trống)'}
             </p>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mật khẩu:</label>
-            <p className="mt-1 text-gray-900 dark:text-gray-100">{product.password}</p>
-          </div>
+          {product.status !== 'Đã Bán' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mật khẩu:</label>
+              <p className="mt-1 text-gray-900 dark:text-gray-100">{product.password}</p>
+            </div>
+          )}
         </div>
         <div className="space-y-4">
           <div>
@@ -85,7 +87,7 @@ const ProductDetail: React.FC = () => {
             <div className="mt-1">
               {product.images.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
-                  {product.images.map((image:any, index:any) => (
+                  {product.images.map((image: any, index: any) => (
                     <img
                       key={index}
                       src={image}

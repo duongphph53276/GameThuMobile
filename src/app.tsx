@@ -20,6 +20,7 @@ import ProfileEdit from "./components/client/ProfileEdit";
 import NotFound from "./components/404/NotFound";
 import UserList from "./components/admin/User";
 import UserEdit from "./components/admin/UserEdit";
+import Cart from "./components/client/Cart";
 
 // ProtectedRoute dùng role từ localStorage
 const ProtectedRoute = ({ children, requiresAdmin = false }: { children: JSX.Element; requiresAdmin?: boolean }) => {
@@ -31,7 +32,7 @@ const ProtectedRoute = ({ children, requiresAdmin = false }: { children: JSX.Ele
   }
 
   if (requiresAdmin && role !== "admin") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/404" replace />;
   }
 
   return children;
@@ -68,10 +69,12 @@ function App() {
       element:<ClientLayout />,
       children: [
         { path: "", element: <Home /> },
+        { path: "cart", element: <ProtectedRoute><Cart /></ProtectedRoute> },
         { path: "profile", element: <ProtectedRoute><Profile /></ProtectedRoute> },
         { path: "client/edit", element: <ProtectedRoute><ProfileEdit /></ProtectedRoute> },
       ],
     },
+    { path:"/404", element:<NotFound/> },
     { path: "*", element: <NotFound /> },
     ]);
   return routes;

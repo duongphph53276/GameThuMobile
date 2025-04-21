@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FaMoon, FaSun, FaShoppingCart  } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 interface HeaderClientProps {
@@ -19,7 +19,7 @@ const HeaderClient: React.FC<HeaderClientProps> = ({ darkMode, setDarkMode, onLo
   return (
     <header className="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
       <a href="/">
-      <h1 className="text-xl font-semibold text-gray-800 dark:text-white">GameThuMobile</h1>
+        <img src="uploads/logo2.png" alt="Logo" className=" h-14 w-auto object-contain" />
       </a>
       <div className="flex items-center space-x-4">
         {isLoggedIn ? (
@@ -74,6 +74,13 @@ const HeaderClient: React.FC<HeaderClientProps> = ({ darkMode, setDarkMode, onLo
             </Link>
           </>
         )}
+        <Link
+          to="/cart"
+          className="relative p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          title="Giỏ hàng"
+        >
+          <FaShoppingCart size={20} className="text-gray-800 dark:text-white" />
+        </Link>
         <button
           onClick={toggleDarkMode}
           className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"

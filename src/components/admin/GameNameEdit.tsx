@@ -47,30 +47,30 @@ const GameNameEdit: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="text-center text-lg text-gray-500">Đang tải...</div>;
-  if (error || !gameName) return <div className="text-center text-red-500">Lỗi: {error || 'Không tìm thấy game'}</div>;
+  if (loading) return <div className="text-center text-lg text-gray-500 dark:text-gray-400">Đang tải...</div>;
+  if (error || !gameName) return <div className="text-center text-red-500">{error || 'Không tìm thấy game'}</div>;
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Sửa Game</h2>
+    <div className="max-w-lg mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Sửa Game</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Tên game</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tên game</label>
           <input
             type="text"
             value={gameName.name}
             onChange={(e) => setGameName({ ...gameName, name: e.target.value })}
-            className="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 w-full border border-gray-300 dark:border-gray-600 p-2 rounded-lg text-gray-900 dark:text-white bg-white dark:bg-gray-700 focus:ring-indigo-500 focus:border-indigo-500"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Slug</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Slug</label>
           <input
             type="text"
             value={gameName.slug || 'Chưa có slug'}
             disabled
-            className="mt-1 w-full border border-gray-300 p-2 rounded-lg bg-gray-100 text-gray-500"
+            className="mt-1 w-full border border-gray-300 dark:border-gray-600 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
           />
         </div>
         <button

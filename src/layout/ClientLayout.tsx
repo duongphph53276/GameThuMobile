@@ -1,9 +1,9 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom"; // Thêm useLocation
 import HeaderClient from "./client/header";
 import FooterClient from "./client/footer";
-import NavClient from "./client/nav";
+// import NavClient from "./client/nav"; không còn được sử dụng vì nav tích hợp banner
 import { useEffect, useState } from "react";
-import Notification from "./client/Notification";
+import Banner from "./client/banner";
 
 const ClientLayout = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -75,7 +75,8 @@ const ClientLayout = () => {
   }, [darkMode]);
 
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black text-gray-900 dark:text-white">
+    <main className="min-h-screen flex flex-col bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-900 dark:to-yellow-200 text-gray-900 dark:text-white">
+      <div className="flex-1 mx-20 bg-gradient-to-b "  >
       <HeaderClient
         darkMode={darkMode}
         setDarkMode={setDarkMode}
@@ -83,9 +84,10 @@ const ClientLayout = () => {
         isLoggedIn={isLoggedIn}
         user={user}
       />
-      <NavClient />
-      <Notification/>
-      <div className="flex-1 container mx-auto px-6 py-8 bg-white dark:bg-gray-800 shadow-lg rounded-xl">
+      </div>
+      {/* <NavClient /> hiện tại không còn sử dụng */}
+      <Banner /> {/* Hiển thị banner ở tất cả các trang */}
+      <div className="flex-1 container mx-auto bg-white dark:bg-gray-800 shadow-lg ">
         <Outlet />
       </div>
       <FooterClient />

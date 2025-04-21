@@ -7,6 +7,8 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State để kiểm soát popup
+  const [popupContent, setPopupContent] = useState<{ message: string; banReason: string; bannedUntil: string } | null>(null); // Nội dung popup
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,8 +20,10 @@ const Login: React.FC = () => {
         localStorage.setItem('role', response.data.user.role);
         const role = response.data.user.role;
         if (role === 'admin') {
+          alert("Đăng nhập thành công");
           navigate('/admin');
         } else {
+          alert("Đăng nhập thành công");
           navigate('/');
         }
       }
@@ -27,11 +31,20 @@ const Login: React.FC = () => {
       if (error.response?.status === 403) {
         const { message, banReason, bannedUntil } = error.response.data;
         const banDate = bannedUntil ? new Date(bannedUntil).toLocaleString() : 'không xác định';
-        setErrorMessage(`${message}. Lý do: ${banReason}. Thời gian mở khóa: ${banDate}`);
+        // Hiển thị popup cho lỗi cấm
+        setPopupContent({ message, banReason, bannedUntil: banDate });
+        setIsPopupOpen(true);
       } else {
+        // Các lỗi khác vẫn hiển thị trong div
         setErrorMessage(error.response?.data?.message || 'Đăng nhập thất bại');
       }
     }
+  };
+
+  // Hàm đóng popup
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setPopupContent(null);
   };
 
   return (
@@ -74,6 +87,24 @@ const Login: React.FC = () => {
           </button>
         </form>
       </div>
+
+      {/* Popup */}
+      {isPopupOpen && popupContent && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 className="text-lg font-bold mb-2">Tài khoản bị cấm</h3>
+            <p className="mb-2"><strong>Thông báo:</strong> {popupContent.message}</p>
+            <p className="mb-2"><strong>Lý do:</strong> {popupContent.banReason}</p>
+            <p className="mb-4"><strong>Thời gian mở khóa:</strong> {popupContent.bannedUntil}</p>
+            <button
+              onClick={closePopup}
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

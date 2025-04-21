@@ -79,6 +79,24 @@ const SidebarAdmin: React.FC = () => {
         >
           Quản lý người dùng
         </Link>
+        <Link
+          to="/admin/order"
+          className="block px-4 py-3 text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+        >
+          Quản lý đơn hàng
+        </Link>
+        <Link
+          to="/admin/discount"
+          className="block px-4 py-3 text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+        >
+          Quản lý giảm giá
+        </Link>
+        <Link
+          to="/admin/setting"
+          className="block px-4 py-3 text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200"
+        >
+          Chỉnh sửa web chung
+        </Link>
       </nav>
     </div>
   );
